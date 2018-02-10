@@ -26,6 +26,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
 
+var score = 0
 /*
  * Be sure to setup your config values before running this code. You can
  * set them using environment variables or modifying the config file in /config.
@@ -244,11 +245,49 @@ function receivedMessage(event) {
     return;
   } else if (quickReply) {
     var quickReplyPayload = quickReply.payload;
-    console.log("Quick reply for message %s with payload %s",
-      messageId, quickReplyPayload);
-
-    sendTextMessage(senderID, "Quick reply tapped");
-    return;
+    if (quickReplyPayload.indexOf('-') > -1) {
+      var replayArray = quickReplyPayload.split('-');
+      var question = replayArray[0];
+      var result = replayArray[1];
+      score += parseInt(result);
+      switch (question) {
+        case '1':
+          sendQuestion(senderID, 2);
+          return;
+        case '2':
+          sendQuestion(senderID, 3);
+          return;
+        case '3':
+          sendQuestion(senderID, 4);
+          return;
+        case '4':
+          sendQuestion(senderID, 5);
+          return;
+        case '5':
+          sendQuestion(senderID, 6);
+          return;
+        case '6':
+          sendQuestion(senderID, 7);
+          return;
+        case '7':
+          sendQuestion(senderID, 8);
+          return;
+        case '8':
+          sendQuestion(senderID, 9);
+          return;
+        case '9':
+          calculateResult(senderID);
+          return;
+        default:
+          console.log("test error!");
+          return;
+      }
+    } else {
+      // console.log("Quick reply for message %s with payload %s",
+      //   messageId, quickReplyPayload);
+      sendTextMessage(senderID, "Quick reply tapped");
+      return;
+    }
   }
 
   if (messageText) {
@@ -294,8 +333,9 @@ function receivedMessage(event) {
         requiresServerURL(sendReceiptMessage, [senderID]);
         break;
 
-      case 'quick reply':
-        sendQuickReply(senderID);
+      case 'start test':
+        sendStartTest(senderID);
+        setTimeout(function() {sendQuestion(senderID, 1);}, 3000);
         break;
 
       case 'read receipt':
@@ -593,6 +633,20 @@ function sendTextMessage(recipientId, messageText) {
   callSendAPI(messageData);
 }
 
+function sendStartTest(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: "Over the last 2 weeks, how often have you been bothered by any of the following problems?",
+      metadata: "DEVELOPER_DEFINED_METADATA"
+    }
+  };
+
+  callSendAPI(messageData);
+}
+
 /*
  * Send a button message using the Send API.
  *
@@ -750,33 +804,300 @@ function sendReceiptMessage(recipientId) {
  * Send a message with Quick Reply buttons.
  *
  */
-function sendQuickReply(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: "What's your favorite movie genre?",
-      quick_replies: [
-        {
-          "content_type":"text",
-          "title":"Action",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
+function sendQuestion(recipientId, number) {
+  switch (number) {
+    case 1:
+      score = 0;
+      var messageData = {
+        recipient: {
+          id: recipientId
         },
-        {
-          "content_type":"text",
-          "title":"Comedy",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
-        },
-        {
-          "content_type":"text",
-          "title":"Drama",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
+        message: {
+          text: "Little interest or pleasure in doing things",
+          quick_replies: [
+            {
+              "content_type":"text",
+              "title":"Not at all",
+              "payload":"1-0"
+            },
+            {
+              "content_type":"text",
+              "title":"Several days",
+              "payload":"1-1"
+            },
+            {
+              "content_type":"text",
+              "title":"More than half",
+              "payload":"1-2"
+            },
+            {
+              "content_type":"text",
+              "title":"Nearly every day",
+              "payload":"1-3"        
+            }
+          ]
         }
-      ]
-    }
-  };
-
+      };
+      break;
+    case 2:
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text: "Feeling down, depressed, or hopeless",
+          quick_replies: [
+            {
+              "content_type":"text",
+              "title":"Not at all",
+              "payload":"2-0"
+            },
+            {
+              "content_type":"text",
+              "title":"Several days",
+              "payload":"2-1"
+            },
+            {
+              "content_type":"text",
+              "title":"More than half of the days",
+              "payload":"2-2"
+            },
+            {
+              "content_type":"text",
+              "title":"Nearly every day",
+              "payload":"2-3"        
+            }
+          ]
+        }
+      };
+      break;
+    case 3:
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text: "Trouble falling or staying asleep, or sleeping too much",
+          quick_replies: [
+            {
+              "content_type":"text",
+              "title":"Not at all",
+              "payload":"3-0"
+            },
+            {
+              "content_type":"text",
+              "title":"Several days",
+              "payload":"3-1"
+            },
+            {
+              "content_type":"text",
+              "title":"More than half of the days",
+              "payload":"3-2"
+            },
+            {
+              "content_type":"text",
+              "title":"Nearly every day",
+              "payload":"3-3"        
+            }
+          ]
+        }
+      };
+      break;
+    case 4:
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text: "Feeling tired or having little energy",
+          quick_replies: [
+            {
+              "content_type":"text",
+              "title":"Not at all",
+              "payload":"4-0"
+            },
+            {
+              "content_type":"text",
+              "title":"Several days",
+              "payload":"4-1"
+            },
+            {
+              "content_type":"text",
+              "title":"More than half of the days",
+              "payload":"4-2"
+            },
+            {
+              "content_type":"text",
+              "title":"Nearly every day",
+              "payload":"4-3"        
+            }
+          ]
+        }
+      };
+      break;
+    case 5:
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text: "Poor appetite or overeating",
+          quick_replies: [
+            {
+              "content_type":"text",
+              "title":"Not at all",
+              "payload":"5-0"
+            },
+            {
+              "content_type":"text",
+              "title":"Several days",
+              "payload":"5-1"
+            },
+            {
+              "content_type":"text",
+              "title":"More than half of the days",
+              "payload":"5-2"
+            },
+            {
+              "content_type":"text",
+              "title":"Nearly every day",
+              "payload":"5-3"        
+            }
+          ]
+        }
+      };
+      break;
+    case 6:
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text: "Feeling bad about yourself - or that you are a failure or have let yourself or your family down",
+          quick_replies: [
+            {
+              "content_type":"text",
+              "title":"Not at all",
+              "payload":"6-0"
+            },
+            {
+              "content_type":"text",
+              "title":"Several days",
+              "payload":"6-1"
+            },
+            {
+              "content_type":"text",
+              "title":"More than half of the days",
+              "payload":"6-2"
+            },
+            {
+              "content_type":"text",
+              "title":"Nearly every day",
+              "payload":"6-3"        
+            }
+          ]
+        }
+      };
+      break;
+    case 7:
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text: "Trouble concentrating on things, such as reading the newspaper or watching television",
+          quick_replies: [
+            {
+              "content_type":"text",
+              "title":"Not at all",
+              "payload":"7-0"
+            },
+            {
+              "content_type":"text",
+              "title":"Several days",
+              "payload":"7-1"
+            },
+            {
+              "content_type":"text",
+              "title":"More than half of the days",
+              "payload":"7-2"
+            },
+            {
+              "content_type":"text",
+              "title":"Nearly every day",
+              "payload":"7-3"        
+            }
+          ]
+        }
+      };
+      break;
+    case 8:
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text: "Moving or speaking so slowly that other people could have noticed",
+          quick_replies: [
+            {
+              "content_type":"text",
+              "title":"Not at all",
+              "payload":"8-0"
+            },
+            {
+              "content_type":"text",
+              "title":"Several days",
+              "payload":"8-1"
+            },
+            {
+              "content_type":"text",
+              "title":"More than half of the days",
+              "payload":"8-2"
+            },
+            {
+              "content_type":"text",
+              "title":"Nearly every day",
+              "payload":"8-3"        
+            }
+          ]
+        }
+      };
+      break;
+    case 9:
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text: "Thoughts that you would be better off dead, or of hurting yourself",
+          quick_replies: [
+            {
+              "content_type":"text",
+              "title":"Not at all",
+              "payload":"9-0"
+            },
+            {
+              "content_type":"text",
+              "title":"Several days",
+              "payload":"9-1"
+            },
+            {
+              "content_type":"text",
+              "title":"More than half of the days",
+              "payload":"9-2"
+            },
+            {
+              "content_type":"text",
+              "title":"Nearly every day",
+              "payload":"9-3"        
+            }
+          ]
+        }
+      };
+      break;
+    default:
+      console.log("question error!");
+  }
   callSendAPI(messageData);
 }
 
@@ -865,7 +1186,7 @@ function sendHowAreYouDoing(recipientId) {
       id: recipientId
     },
     message: {
-      text: 'Hi, how is your day going?'
+      text: 'Hi, how is your day going?',
       quick_replies: [
         {
           "content_type":"text",
@@ -896,36 +1217,6 @@ function sendHowAreYouDoing(recipientId) {
           "content_type":"text",
           "title":'😂',
           "payload":"6"
-        },
-        {
-          "content_type":"text",
-          "title":'😣',
-          "payload":"7"
-        },
-        {
-          "content_type":"text",
-          "title":'😫',
-          "payload":"8"
-        },
-        {
-          "content_type":"text",
-          "title":'😖',
-          "payload":"9"
-        },
-        {
-          "content_type":"text",
-          "title":'😭',
-          "payload":"10"
-        },
-        {
-          "content_type":"text",
-          "title":'😡',
-          "payload":"11"
-        },
-        {
-          "content_type":"text",
-          "title":'💩',
-          "payload":"12"
         }
       ]
     }
@@ -968,6 +1259,14 @@ function callSendAPI(messageData) {
   });
 }
 
+function calculateResult(receiptId) {
+  if (score <= 9) {
+    sendTextMessage(recipientID, "Good!");
+  } else {
+    sendTextMessage(receiptId, "Bad!");
+  }
+  return;
+}
 // Start server
 // Webhooks must be available via SSL with a certificate signed by a valid
 // certificate authority.
