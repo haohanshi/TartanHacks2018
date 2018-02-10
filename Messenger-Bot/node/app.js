@@ -872,7 +872,7 @@ function sendHowAreYouDoing(recipientId) {
 function callSendAPI(messageData) {
   if (!greet) {
     greet = true;
-    setTimeout(function() {sendHowAreYouDoing(messageData.recipient.id);}, 86400);
+    setTimeout(function() {sendHowAreYouDoing(messageData.recipient.id);}, 10);
   }
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
