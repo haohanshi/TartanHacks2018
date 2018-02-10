@@ -10,6 +10,8 @@
 /* jshint node: true, devel: true */
 'use strict';
 
+var greet = false;
+
 const
   bodyParser = require('body-parser'),
   config = require('config'),
@@ -848,12 +850,30 @@ function sendAccountLinking(recipientId) {
   callSendAPI(messageData);
 }
 
+function sendHowAreYouDoing(recipientId) {
+  greet = false;
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: 'Hi, how are you doing?'
+    }
+  };
+
+  callSendAPI(messageData);
+}
+
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll
  * get the message id in a response
  *
  */
 function callSendAPI(messageData) {
+  if (!greet) {
+    greet = true;
+    setTimeout(function() {sendHowAreYouDoing(messageData.recipient.id);}, 86400);
+  }
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
