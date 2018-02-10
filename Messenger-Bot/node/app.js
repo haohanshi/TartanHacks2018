@@ -314,6 +314,13 @@ function receivedMessage(event) {
         requiresServerURL(sendAccountLinking, [senderID]);
         break;
 
+      case 'your day':
+        if (!greet) {
+          greet = true;
+          setTimeout(function() {sendHowAreYouDoing(senderID);}, 1000);
+        }
+        break;
+
       default:
         sendTextMessage(senderID, messageText);
     }
@@ -933,10 +940,10 @@ function sendHowAreYouDoing(recipientId) {
  *
  */
 function callSendAPI(messageData) {
-  if (!greet) {
-    greet = true;
-    setTimeout(function() {sendHowAreYouDoing(messageData.recipient.id);}, 10);
-  }
+  //if (!greet) {
+  //  greet = true;
+  //  setTimeout(function() {sendHowAreYouDoing(messageData.recipient.id);}, 1000);
+  //}
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
