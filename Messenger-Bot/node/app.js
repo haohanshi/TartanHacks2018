@@ -484,6 +484,7 @@ function sendImageMessage(recipientId) {
  *
  */
 function sendGifMessage(recipientId) {
+  var name = Math.floor((Math.random() * 10) + 1);
   var messageData = {
     recipient: {
       id: recipientId
@@ -492,7 +493,7 @@ function sendGifMessage(recipientId) {
       attachment: {
         type: "image",
         payload: {
-          url: SERVER_URL + "/assets/instagram_logo.gif"
+          url: SERVER_URL + "/assets/"+name.toString()+".gif"
         }
       }
     }
