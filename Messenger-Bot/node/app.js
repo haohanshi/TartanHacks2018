@@ -858,7 +858,69 @@ function sendHowAreYouDoing(recipientId) {
       id: recipientId
     },
     message: {
-      text: 'Hi, how are you doing?'
+      text: 'Hi, how is your day going?'
+      quick_replies: [
+        {
+          "content_type":"text",
+          "title":'😄',
+          "payload":"1"
+        },
+        {
+          "content_type":"text",
+          "title":'😃',
+          "payload":"2"
+        },
+        {
+          "content_type":"text",
+          "title":'🙂',
+          "payload":"3"
+        },
+        {
+          "content_type":"text",
+          "title":'😐',
+          "payload":"4"
+        },
+        {
+          "content_type":"text",
+          "title":'😑',
+          "payload":"5"
+        },
+        {
+          "content_type":"text",
+          "title":'😂',
+          "payload":"6"
+        },
+        {
+          "content_type":"text",
+          "title":'😣',
+          "payload":"7"
+        },
+        {
+          "content_type":"text",
+          "title":'😫',
+          "payload":"8"
+        },
+        {
+          "content_type":"text",
+          "title":'😖',
+          "payload":"9"
+        },
+        {
+          "content_type":"text",
+          "title":'😭',
+          "payload":"10"
+        },
+        {
+          "content_type":"text",
+          "title":'😡',
+          "payload":"11"
+        },
+        {
+          "content_type":"text",
+          "title":'💩',
+          "payload":"12"
+        }
+      ]
     }
   };
 
